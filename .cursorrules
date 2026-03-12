@@ -2,43 +2,67 @@
 # Source: DesignLint v1.2 by Ruben Granet
 # https://github.com/rgranet/designlint
 
-## MANDATORY — Before Writing Any UI/UX Code
+## Two Modes
 
-When asked to build, design, or modify any user interface — web apps, landing pages,
-dashboards, iOS screens, Android screens, React Native, or any UI component — you MUST
+This skill operates in TWO modes:
+
+**Create Mode** → When asked to build, design, or create an interface.
+**Audit Mode** → When asked to review, critique, audit, fix, or improve an existing interface.
+
+"Redesign this" = Audit first (diagnose), then Create (rebuild with fresh brief).
+
+Read `designlint/SKILL.md` for the full protocol in both modes.
+
+---
+
+## MANDATORY — Before Writing Any UI/UX Code (Create Mode)
+
+When asked to build, design, or modify any user interface — you MUST
 complete the Design Decision Protocol BEFORE writing code.
-
-### Instructions
-
-1. Read `designlint/SKILL.md` for the full 9-decision protocol.
-2. Read `designlint/references/archetypes.md` to pick a design archetype (as departure point, not template).
-3. Read `designlint/references/ux.md` to pick a UX paradigm.
-4. Read the relevant platform reference:
-   - Web → `designlint/references/web.md`
-   - iOS → `designlint/references/ios.md`
-   - Android → `designlint/references/compose.md`
-   - React Native → `designlint/references/react-native.md`
-   - Dashboards → `designlint/references/dashboards.md`
 
 ### Phase 0 — Understand the Human (before any aesthetic choice)
 
 - **User in context**: Who is this person and what is their emotional state? (one sentence)
 - **Creative tension**: Pick TWO contradictory qualities and commit to resolving both (e.g., "Dense BUT calm")
-- **Archetype as departure**: Pick an archetype, then name what you KEEP, DISCARD, and ADD
+- **Archetype as departure**: Read `designlint/references/archetypes.md`. Pick one, then name what you KEEP, DISCARD, and ADD
 
 ### The 9 Decisions (document in a comment block before code)
 
 1. **Aesthetic Axis** — Pick a mood. Justify WHY it serves the user's emotional context.
 2. **Typography Contract** — Display + body fonts. BANNED: Inter, Roboto, Arial, system-ui, DM Sans, Poppins, Space Grotesk
 3. **Color System** — 5 tokens (bg/surface/primary/accent/text). BANNED: purple gradients, default blues, generic dark mode
-4. **Spatial Grammar** — Choose: Asymmetric / Breathing room / Dense utility / Editorial bleed / Layered depth / Off-grid
-5. **Motion Character** — Choose: Snappy / Elastic / Cinematic / Mechanical / Playful / None
+4. **Spatial Grammar** — Asymmetric / Breathing room / Dense utility / Editorial bleed / Layered depth / Off-grid
+5. **Motion Character** — Snappy / Elastic / Cinematic / Mechanical / Playful / None
 6. **Signature Detail** — One memorable, unexpected UI element
-7. **UX Paradigm** — Navigation + Interaction + Data entry + Feedback + Onboarding models
-8. **Voice & Tone** — Define formality, warmth, confidence, brevity. Write actual CTA/empty/error text.
-9. **The Departure** — Name ONE thing in your design that exists in NO archetype in the reference library.
+7. **UX Paradigm** — Read `designlint/references/ux.md`. Navigation + Interaction + Data entry + Feedback + Onboarding
+8. **Voice & Tone** — Formality, warmth, confidence, brevity. Write actual CTA/empty/error text. No "Submit".
+9. **The Departure** — ONE thing in your design that exists in NO archetype in the reference library.
 
-### Anti-Convergence Check (before delivering)
+### Human Critique (before shipping)
+
+- Would the user feel understood?
+- Is there a moment of delight?
+- Does the voice sound like a person wrote it?
+- Is the creative tension actually resolved?
+- If "no" to any — iterate before delivering.
+
+---
+
+## Audit Mode (when reviewing existing designs)
+
+When asked to review, critique, or improve an existing interface:
+
+1. **Capture** what exists — document current fonts, colors, layout, UX patterns, voice
+2. **Diagnose** convergence — scan against UI, UX, and human convergence checklists
+3. **Score** 1-5 (Generic → Human)
+4. **Improvement Brief** — top 3 changes, specific UI/UX/voice fixes, one Departure
+5. **Execute** if asked — use the brief as the design brief and continue with Create Mode from Phase 3
+
+Full audit protocol in `designlint/SKILL.md` → "Audit Mode" section.
+
+---
+
+## Anti-Convergence Check (both modes, before delivering)
 
 - ✗ No Inter/Roboto as primary font
 - ✗ No purple/blue gradient on white
@@ -50,11 +74,3 @@ complete the Design Decision Protocol BEFORE writing code.
 - ✗ No "Submit" / "An error occurred" / "No items found" generic copy
 - ✓ WCAG AA contrast on all text/bg combinations
 - ✓ Keyboard focus indicators present
-
-### Human Critique (before shipping)
-
-- Would the user feel understood by this interface?
-- Is there a moment of delight?
-- Does the voice sound like a person wrote it?
-- Is the creative tension actually resolved — or did you ignore one side?
-- If the answer to any of these is "no" — iterate before delivering.

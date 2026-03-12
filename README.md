@@ -1,6 +1,6 @@
 # DesignLint
 
-**Force distinctive, human-feeling UI/UX design before any AI agent writes code.**
+**Force distinctive, human-feeling UI/UX design before any AI agent writes code. Audit and improve existing interfaces.**
 
 By [Ruben Granet](https://github.com/rgranet) · v1.2.0 · MIT License
 
@@ -18,7 +18,23 @@ AI coding agents converge. Left unconstrained, they always produce the same thin
 
 This isn't a style preference — it's a structural failure. Every AI-generated interface looks, feels, and sounds like every other AI-generated interface.
 
-**DesignLint** breaks that convergence by forcing AI agents to understand the user, make 9 deliberate design decisions, resolve a creative tension, and critique the result — before any code is generated.
+**DesignLint** breaks that convergence with two modes:
+- **Create** — Understand the user, make 9 deliberate design decisions, resolve a creative tension, and critique the result before shipping.
+- **Audit** — Diagnose an existing interface against the same standards, score it, and produce a concrete improvement plan.
+
+---
+
+## Two Modes
+
+### Create Mode
+*"Build me a task management app"*
+
+The agent stops before writing code. It identifies the user and their emotional state, picks a creative tension, selects an archetype as a departure point (not a template), makes 9 design decisions covering aesthetics through voice, and runs a human critique before shipping.
+
+### Audit Mode
+*"What's wrong with this UI?" / "Improve this interface" / "Review this design"*
+
+The agent documents what exists, runs the full convergence scan (UI, UX, and human), scores the design 1–5, produces an improvement brief with the top 3 highest-impact changes, and optionally executes the improvements.
 
 ---
 
@@ -53,35 +69,22 @@ The code that follows is intentional, empathetic, and distinctive.
 
 ```
 designlint/
-├── SKILL.md                        # Core protocol (9 decisions, 5 phases)
+├── SKILL.md                        # Core protocol (Create + Audit modes)
 ├── AGENTS.md                       # Drop-in for OpenAI Codex
 ├── .cursorrules                    # Drop-in for Cursor
+├── .github/
+│   └── copilot-instructions.md     # Drop-in for GitHub Copilot
 └── references/
     ├── archetypes.md               # Design vocabulary library
-    │                               #   → 8 product archetypes (Linear, Apple, Stripe, Vercel…)
-    │                               #   → Era archetypes (Y2K, Swiss, Bauhaus, Brutalist…)
-    │                               #   → Industry archetypes (Luxury/Maison, Fintech, Agency…)
-    │                               #   → 8 ready-to-use color palettes
-    │                               #   → Combination matrix
     ├── ux.md                       # UX paradigm library
-    │                               #   → 6 navigation paradigms
-    │                               #   → 6 interaction models
-    │                               #   → 5 data entry patterns
-    │                               #   → 6 feedback & state patterns
-    │                               #   → 5 onboarding paradigms
-    │                               #   → UX × UI pairing matrix
-    ├── web.md                      # React / Next.js / HTML implementation patterns
-    ├── ios.md                      # SwiftUI implementation patterns
+    ├── web.md                      # React / Next.js / HTML patterns
+    ├── ios.md                      # SwiftUI patterns
     ├── compose.md                  # Android / Jetpack Compose patterns
     ├── react-native.md             # React Native + Reanimated patterns
     └── dashboards.md               # Data UI & dashboard patterns
 ```
 
 ---
-## Quick install
-```bash
-npx skills add rgranet/designlint-skill
-```
 
 ## Install
 
@@ -93,30 +96,25 @@ claude skill install designlint.skill
 
 ### Cursor
 
-Copy `.cursorrules` to your project root. It's already configured to reference `SKILL.md` and the reference files.
-
 ```bash
 cp designlint/.cursorrules ./
 cp -r designlint/ ./designlint/
 ```
 
-Or add to your existing `.cursorrules`:
+### GitHub Copilot
 
-```
-When building any UI or UX, read and follow designlint/SKILL.md before writing code.
-Read references from designlint/references/ as directed by SKILL.md.
+```bash
+mkdir -p .github
+cp designlint/.github/copilot-instructions.md .github/
+cp -r designlint/ ./designlint/
 ```
 
 ### OpenAI Codex
-
-Copy `AGENTS.md` to your project root:
 
 ```bash
 cp designlint/AGENTS.md ./
 cp -r designlint/ ./designlint/
 ```
-
-Codex reads `AGENTS.md` automatically — no additional configuration needed.
 
 ### Manual (any agent)
 
@@ -126,12 +124,11 @@ Add the `designlint/` folder to your project and reference `SKILL.md` in whateve
 
 ## How It Works
 
-The skill enforces **5 phases** and **9 design decisions** before code ships:
+### Create Mode — 5 phases, 9 decisions
 
-### Phase 0 — Understand the human
-Define the user's emotional context, pick a creative tension, and select an archetype as a departure point (not a template).
+**Phase 0** — Understand the human (user context, creative tension, archetype as departure point)
 
-### Phase 1 — 9 decisions
+**Phase 1** — 9 decisions:
 
 | # | Decision | What it breaks |
 |---|----------|----------------|
@@ -145,65 +142,23 @@ Define the user's emotional context, pick a creative tension, and select an arch
 | 8 | Voice & Tone | "Submit", "An error occurred", robot-speak |
 | 9 | The Departure | Reproducing archetypes instead of designing |
 
-### Phase 2 — Document the design brief
-All 9 decisions in a comment block at the top of the code — explicit and auditable.
+**Phase 2** — Document the design brief (comment block, auditable)
 
-### Phase 3 — Build with platform patterns
-Implementation references for Web, iOS, Android, React Native, and dashboards.
+**Phase 3** — Build with platform patterns (adapt, don't copy)
 
-### Phase 4 — Anti-convergence audit
-Checklist for UI, UX, and accessibility anti-patterns.
+**Phase 4** — Anti-convergence audit (UI + UX + accessibility)
 
-### Phase 5 — Human critique
-Empathy check (does the user feel understood?), craft check (is there a moment of delight?), and honesty check (is the creative tension actually resolved?). If anything is flat — iterate.
+**Phase 5** — Human critique (empathy, craft, honesty — iterate if flat)
 
-There's also a **Quick Start** (Express Mode) for speed: 4 decisions, one comment line, then code.
+### Audit Mode — 5 steps
 
----
-
-## Example Output
-
-```
-/*
- * UI/UX Design Brief — DesignLint v1.2
- * ──────────────────────────────────────────────
- *
- * — Context —
- * User:        Freelance designer juggling clients — overwhelmed, needs calm control
- * Tension:     Dense BUT calm
- * Archetype:   Things 3 — Keep: today-first, Discard: system blue, Add: editorial type
- *
- * — UI —
- * Aesthetic:   Neo-classical Utilitarian — calm authority for an overwhelmed user
- * Type:        Cormorant Garamond display / Karla body
- * Palette:     #F5F0E8 bg / #EDE8DE surface / #C85A38 primary / #1A1209 text
- * Spatial:     Breathing room + dense task rows (tension resolved)
- * Motion:      Snappy at 150ms, cinematic 600ms on day transitions
- * Signature:   Priority = type weight (light→bold), no color badges
- *
- * — UX —
- * Navigation:  Today-First — today is home, everything else secondary
- * Interaction: Inline editing, swipe to complete
- * Data entry:  Progressive — title only, details expand on tap
- * Feedback:    Optimistic UI + undo, no toasts
- * Onboarding:  Template-first — pre-populated "Sample Project"
- *
- * — Voice —
- * Tone:        Warm + brief + gentle
- * CTA:         "Done"
- * Empty:       "A clear day — nice."
- * Error:       "Lost that one. Undo?"
- *
- * — Departure —
- * Priority as type weight, not color. No badges, no icons — just
- * font-weight 300→700 to signal urgency. Doesn't exist in any reference.
- *
- * — Anti-pattern check —
- * UI: ✗ No Inter/Roboto  ✗ No purple gradient  ✗ No centered column
- * UX: ✗ No tab bar       ✗ No modal forms      ✗ No success toasts
- * A11y: ✓ AA contrast     ✓ Focus indicators    ✓ Semantic markup
- */
-```
+| Step | What happens |
+|------|-------------|
+| A1 | Capture what exists (fonts, colors, layout, UX, voice) |
+| A2 | Convergence diagnosis (UI + UX + human scans) |
+| A3 | Score 1–5 (Generic → Human) |
+| A4 | Improvement brief (top 3 changes + UI/UX/voice fixes + Departure) |
+| A5 | Execute if asked (brief → Create Mode Phase 3) |
 
 ---
 
@@ -223,8 +178,9 @@ There's also a **Quick Start** (Express Mode) for speed: 4 decisions, one commen
 |-------|---------------|--------|
 | Claude Code | Native `.skill` install | ✅ |
 | Cursor | `.cursorrules` | ✅ |
+| GitHub Copilot | `.github/copilot-instructions.md` | ✅ |
 | OpenAI Codex | `AGENTS.md` | ✅ |
-| Windsurf | `.windsurfrules` (same format as `.cursorrules`) | ✅ |
+| Windsurf | `.windsurfrules` (same as `.cursorrules`) | ✅ |
 | Other agents | Manual system prompt | ✅ |
 
 ---
@@ -233,10 +189,10 @@ There's also a **Quick Start** (Express Mode) for speed: 4 decisions, one commen
 
 Issues and PRs welcome. The most impactful contributions are:
 
-- **New archetypes** in `references/archetypes.md` (real products or design movements with documented tokens)
-- **New UX paradigms** in `references/ux.md` (real interaction patterns from shipped products)
+- **New archetypes** in `references/archetypes.md`
+- **New UX paradigms** in `references/ux.md`
 - **Platform references** (improvements to existing or new platforms)
-- **Before/after examples** showing the skill's impact on generated code
+- **Before/after examples** showing the skill's impact
 
 ---
 

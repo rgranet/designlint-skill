@@ -5,20 +5,21 @@ author: Ruben Granet
 description: >
   Force distinctive, human-feeling UI/UX design before writing any code. Use this skill
   whenever building or designing any interface — web apps, landing pages, dashboards,
-  iOS/SwiftUI screens, Android/Compose screens, or any UI component. Mandatory when the
-  user says "build a UI", "create a screen", "design a component", "make it look good",
-  "design the UX", or asks for any frontend/interface/experience work. This skill combats
-  convergence at both the UI level (Inter+Tailwind+purple-gradient) AND the UX level
-  (tab bar + modal + toast). It produces design that feels human — not just different, but
-  intentional, empathetic, and crafted. It imposes a structured creative decision phase
-  covering user context, visual design, interaction paradigms, and voice before any code
-  is generated.
+  iOS/SwiftUI screens, Android/Compose screens, or any UI component. Also use this skill
+  when the user asks to review, critique, audit, or improve an existing interface.
+  Mandatory when the user says "build a UI", "create a screen", "design a component",
+  "make it look good", "design the UX", "review this design", "what's wrong with this UI",
+  "improve this interface", or asks for any frontend/interface/experience work. This skill
+  operates in two modes: CREATE mode (9 decisions + human critique before code) and AUDIT
+  mode (diagnose an existing interface against the same standards and produce an improvement
+  plan). It produces design that feels human — not just different, but intentional, empathetic,
+  and crafted.
 compatibility: claude-code, cursor, codex, copilot
 ---
 
 # DesignLint
 
-> **TL;DR** — AI agents produce interfaces that all look and feel the same. DesignLint fixes this by forcing you to understand the user, make 9 deliberate design decisions, resolve a creative tension, and critique the result — all before shipping. The goal isn't just different. It's human.
+> **TL;DR** — AI agents produce interfaces that all look and feel the same. DesignLint fixes this in two modes: **Create** (understand the user, make 9 deliberate design decisions, resolve a creative tension, critique the result — before shipping) and **Audit** (diagnose an existing interface, identify what's generic, and produce a concrete improvement plan). The goal isn't just different. It's human.
 
 ---
 
@@ -53,7 +54,28 @@ This skill breaks all three layers.
 
 ---
 
-## Quick Start (Express Mode)
+## Two Modes
+
+DesignLint operates in two modes depending on the task:
+
+### → Create Mode (default)
+When the user asks to **build, design, or create** an interface.
+Follows the full protocol: Phase 0 → Phase 1 (9 decisions) → Phase 2 (brief) → Phase 3 (build) → Phase 4 (audit) → Phase 5 (critique).
+
+### → Audit Mode
+When the user asks to **review, critique, audit, fix, or improve** an existing interface — whether provided as a screenshot, a URL, code, or a description.
+Follows the Audit Protocol documented at the end of this file: Diagnosis → Convergence Score → Improvement Brief → Execution.
+
+**How to detect which mode:**
+- "Build me a…" / "Create a…" / "Design a…" → **Create Mode**
+- "What's wrong with this?" / "Review this UI" / "Improve this" / "Make this better" / "Audit this design" / "This looks generic" → **Audit Mode**
+- "Redesign this" → **Audit Mode first** (diagnose), then **Create Mode** (rebuild with a fresh brief)
+
+---
+
+## Create Mode
+
+### Quick Start (Express Mode)
 
 Short on time? Make these 4 decisions minimum:
 
@@ -514,6 +536,179 @@ After the code is written and passes the audit, step back and answer these quest
 ```
 
 If anything fails here — iterate. Change one decision, re-execute, re-critique. The first version is rarely the human version.
+
+---
+
+## Audit Mode
+
+Use this mode when reviewing, critiquing, or improving an existing interface. The input can be a screenshot, a URL, code (React, SwiftUI, Compose, HTML/CSS), or a description of the interface.
+
+### Step A1 — Capture What Exists
+
+Before judging, document what the current design IS. Not what's wrong — just what's there.
+
+```
+/*
+ * DesignLint Audit — Current State
+ * ─────────────────────────────────
+ * Source:       [screenshot / code / URL / description]
+ * Product:      [what is this interface for?]
+ *
+ * — Current UI —
+ * Typography:   [what fonts, sizes, weights are used?]
+ * Colors:       [what palette is in play? bg, text, primary, accents]
+ * Layout:       [how is space used? grid, columns, padding patterns]
+ * Components:   [cards, buttons, modals — what do they look like?]
+ * Motion:       [any animations? what kind?]
+ *
+ * — Current UX —
+ * Navigation:   [how does the user move through the product?]
+ * Interactions:  [how does the user act on content?]
+ * Data entry:   [how does the user input information?]
+ * Feedback:     [how does the system communicate state?]
+ * Empty states: [what happens when there's nothing to show?]
+ *
+ * — Current Voice —
+ * CTAs:         [what do buttons say?]
+ * Errors:       [how are errors communicated?]
+ * Tone:         [formal? casual? generic?]
+ */
+```
+
+### Step A2 — Convergence Diagnosis
+
+Run the existing design through every checklist. Be specific — don't just flag "generic", explain WHY and WHAT the default is.
+
+**UI Convergence Scan:**
+```
+[ ] Typography: Is it Inter, Roboto, system-ui, or another banned font?
+    → Finding: [specific font detected + what to replace it with]
+
+[ ] Colors: Is the palette purple/blue gradient on white? Default blues?
+    Generic dark mode? Safe neutrals?
+    → Finding: [specific hex values detected + what's generic about them]
+
+[ ] Layout: Is everything centered in a single column? Uniform padding?
+    Equal-sided card padding? Predictable grid?
+    → Finding: [specific layout pattern + what's predictable]
+
+[ ] Components: Are cards rounded-xl with subtle shadows? Default shadcn?
+    → Finding: [specific component patterns detected]
+
+[ ] Motion: Is it opacity fade-in only? Uniform 300ms? No motion at all?
+    → Finding: [specific motion pattern or lack thereof]
+
+[ ] Signature: Is there ANY memorable visual detail?
+    → Finding: [what would you remember about this design? probably nothing]
+```
+
+**UX Convergence Scan:**
+```
+[ ] Navigation: Tab bar with 5 icons? Sidebar with icon+label?
+    → Finding: [specific nav pattern + why it's default]
+
+[ ] Actions: Everything behind a modal? Tap → Push → Back only?
+    → Finding: [specific interaction patterns]
+
+[ ] Data entry: Full forms with Submit buttons?
+    → Finding: [specific form patterns]
+
+[ ] Feedback: Global toasts? Green success / red error?
+    → Finding: [specific feedback patterns]
+
+[ ] Empty states: Centered illustration + one CTA?
+    → Finding: [specific empty state pattern]
+
+[ ] Onboarding: Feature carousel?
+    → Finding: [specific onboarding pattern or absence]
+```
+
+**Human Convergence Scan:**
+```
+[ ] Empathy: Is there any evidence the design was shaped by who uses it?
+    → Finding: [does the design feel like it was made for a specific person, or for "users"?]
+
+[ ] Voice: Do the words sound human or robotic?
+    → Finding: [list the worst offenders — "Submit", "An error occurred", etc.]
+
+[ ] Tension: Is there any creative tension or point of view?
+    → Finding: [is the design trying to be anything, or just trying to be "clean"?]
+
+[ ] Memorability: If you stripped the logo, could you identify this product?
+    → Finding: [honest answer — probably not]
+```
+
+### Step A3 — Convergence Score
+
+Rate the existing design on a 5-point scale:
+
+| Score | Label | Meaning |
+|-------|-------|---------|
+| 1 | **Generic** | Indistinguishable from any AI-generated default. Inter, purple, tab bar, "Submit". |
+| 2 | **Safe** | One or two intentional choices, but the overall feel is still template-like. |
+| 3 | **Adequate** | Clear aesthetic direction, but UX or voice is still default. Or vice versa. |
+| 4 | **Distinctive** | Strong point of view in both UI and UX. Some generic edges remain. |
+| 5 | **Human** | Feels like a specific person designed this for a specific audience. Memorable. |
+
+→ Document: `/* Convergence Score: [1-5] — [label] */`
+
+### Step A4 — Improvement Brief
+
+Based on the diagnosis, produce a targeted improvement plan. Don't rewrite everything — focus on the highest-impact changes.
+
+**Structure the brief as:**
+
+```
+/*
+ * DesignLint Audit — Improvement Brief
+ * ─────────────────────────────────────
+ * Current score:  [X/5 — label]
+ * Target score:   [Y/5 — label]
+ *
+ * — Context (inferred or provided) —
+ * User:           [who uses this — emotional state]
+ * Tension:        [what tension SHOULD this design resolve?]
+ *
+ * — Top 3 Changes (highest impact) —
+ * 1. [specific change + why + what it fixes]
+ * 2. [specific change + why + what it fixes]
+ * 3. [specific change + why + what it fixes]
+ *
+ * — UI Fixes —
+ * Typography:     [keep / replace with X because Y]
+ * Colors:         [keep / replace with X because Y]
+ * Layout:         [keep / adjust X because Y]
+ * Motion:         [keep / add X because Y]
+ * Signature:      [add: specific detail]
+ *
+ * — UX Fixes —
+ * Navigation:     [keep / replace with X because Y]
+ * Interactions:   [keep / replace with X because Y]
+ * Feedback:       [keep / replace with X because Y]
+ * Empty states:   [keep / rewrite because Y]
+ *
+ * — Voice Fixes —
+ * CTAs:           [old → new]
+ * Errors:         [old → new]
+ * Empty:          [old → new]
+ *
+ * — The Departure —
+ * [one new idea that transforms this from "improved" to "distinctive"]
+ */
+```
+
+**Rules for the Improvement Brief:**
+- **Be specific.** "Change the font" is useless. "Replace Inter with Libre Baskerville for display and Karla for body — it shifts the feel from generic SaaS to approachable authority" is useful.
+- **Preserve what works.** Not everything is wrong. Name what's worth keeping and why.
+- **Prioritize.** 3 high-impact changes beat 15 minor tweaks. What moves the needle most?
+- **Include a Departure.** Even in audit mode, the result should include something original — one idea that elevates the design beyond "fixed" to "distinctive."
+- **Respect constraints.** If the design is in production with a component library, don't propose a full rewrite. Propose changes that work within the existing architecture.
+
+### Step A5 — Execute (if asked)
+
+If the user wants the improvements implemented, switch to **Create Mode** but use the Improvement Brief as the design brief instead of starting from scratch. Read the relevant platform reference file and apply the changes.
+
+The Improvement Brief replaces Phase 0 + Phase 1. Continue from Phase 3 (platform execution) → Phase 4 (anti-convergence audit) → Phase 5 (human critique).
 
 ---
 

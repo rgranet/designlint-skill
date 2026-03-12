@@ -2,7 +2,7 @@
 
 **Force distinctive, human-feeling UI/UX design before any AI agent writes code.**
 
-By [Ruben Granet](https://github.com/rgranet) · v1.1.0 · MIT License
+By [Ruben Granet](https://github.com/rgranet) · v1.2.0 · MIT License
 
 ---
 
@@ -14,9 +14,11 @@ AI coding agents converge. Left unconstrained, they always produce the same thin
 
 **UX:** Tab bar (5 icons) · List → Push detail · Modal for everything · Green toast on success · 3-screen onboarding carousel
 
-This isn't a style preference — it's a structural failure. Every AI-generated interface looks like every other AI-generated interface, regardless of context, brand, or audience.
+**Voice:** "Submit" · "An error occurred" · "No items found" · "Success!" · (spinner)
 
-**designlint** breaks that convergence by imposing a structured **Design Decision Protocol** (7 decisions, 4 phases) covering both visual design and interaction paradigms — before any code is generated.
+This isn't a style preference — it's a structural failure. Every AI-generated interface looks, feels, and sounds like every other AI-generated interface.
+
+**DesignLint** breaks that convergence by forcing AI agents to understand the user, make 9 deliberate design decisions, resolve a creative tension, and critique the result — before any code is generated.
 
 ---
 
@@ -27,19 +29,23 @@ Without this skill, an AI agent asked to "build a task management app" produces:
 ```
 UI:  Inter · #7C3AED primary · white bg · rounded-xl cards · fade-in
 UX:  Tab bar (Home, Tasks, Calendar, Search, Profile) → List → Modal form → Toast
+Copy: "Submit" · "No tasks found" · "Task created successfully"
 ```
 
 With this skill, the same prompt first produces a design brief:
 
 ```
-Archetype:  Things 3 × Luxury/Maison
+User:       Freelance designer juggling clients — overwhelmed, needs calm control
+Tension:    Dense BUT calm
+Archetype:  Things 3 — Keep: today-first, Discard: system blue, Add: warm editorial type
 Palette:    Chalk & Ink (#F5F0E8 bg / #1A1209 text / #C85A38 accent)
 Type:       Cormorant Garamond display / Karla body
 UX:         Today-First nav · Inline editing · Optimistic UI · Progressive onboarding
-Signature:  Vermillion dot (3px) marks today's tasks, no other color in the list
+Voice:      Warm + brief. CTA="Done" · Empty="A clear day — nice." · Error="Lost that one. Undo?"
+Departure:  Priority indicated by type weight (light→bold), not color badges
 ```
 
-The code that follows is intentional, auditable, and distinctive.
+The code that follows is intentional, empathetic, and distinctive.
 
 ---
 
@@ -47,9 +53,11 @@ The code that follows is intentional, auditable, and distinctive.
 
 ```
 designlint/
-├── SKILL.md                        # Core protocol (7 decisions, 4 phases)
+├── SKILL.md                        # Core protocol (9 decisions, 5 phases)
 ├── AGENTS.md                       # Drop-in for OpenAI Codex
 ├── .cursorrules                    # Drop-in for Cursor
+├── .github/
+│   └── copilot-instructions.md     # Drop-in for GitHub Copilot
 └── references/
     ├── archetypes.md               # Design vocabulary library
     │                               #   → 8 product archetypes (Linear, Apple, Stripe, Vercel…)
@@ -97,6 +105,16 @@ When building any UI or UX, read and follow designlint/SKILL.md before writing c
 Read references from designlint/references/ as directed by SKILL.md.
 ```
 
+### GitHub Copilot
+
+Copy the instructions file:
+
+```bash
+mkdir -p .github
+cp designlint/.github/copilot-instructions.md .github/
+cp -r designlint/ ./designlint/
+```
+
 ### OpenAI Codex
 
 Copy `AGENTS.md` to your project root:
@@ -116,7 +134,12 @@ Add the `designlint/` folder to your project and reference `SKILL.md` in whateve
 
 ## How It Works
 
-The skill enforces a **7-decision protocol** before any code is written:
+The skill enforces **5 phases** and **9 design decisions** before code ships:
+
+### Phase 0 — Understand the human
+Define the user's emotional context, pick a creative tension, and select an archetype as a departure point (not a template).
+
+### Phase 1 — 9 decisions
 
 | # | Decision | What it breaks |
 |---|----------|----------------|
@@ -127,10 +150,22 @@ The skill enforces a **7-decision protocol** before any code is written:
 | 5 | Motion Character | Uniform 300ms opacity fades |
 | 6 | Signature Detail | Forgettable, invisible interfaces |
 | 7 | UX Paradigm | Tab bar, modals, global toasts |
+| 8 | Voice & Tone | "Submit", "An error occurred", robot-speak |
+| 9 | The Departure | Reproducing archetypes instead of designing |
 
-The AI must document all 7 decisions in a comment block at the top of the code — making choices explicit and auditable.
+### Phase 2 — Document the design brief
+All 9 decisions in a comment block at the top of the code — explicit and auditable.
 
-There's also a **Quick Start** (Express Mode) for when you need speed: pick an archetype, a palette, and a UX paradigm. 3 decisions, one comment line, then code.
+### Phase 3 — Build with platform patterns
+Implementation references for Web, iOS, Android, React Native, and dashboards.
+
+### Phase 4 — Anti-convergence audit
+Checklist for UI, UX, and accessibility anti-patterns.
+
+### Phase 5 — Human critique
+Empathy check (does the user feel understood?), craft check (is there a moment of delight?), and honesty check (is the creative tension actually resolved?). If anything is flat — iterate.
+
+There's also a **Quick Start** (Express Mode) for speed: 4 decisions, one comment line, then code.
 
 ---
 
@@ -138,25 +173,38 @@ There's also a **Quick Start** (Express Mode) for when you need speed: pick an a
 
 ```
 /*
- * UI/UX Design Brief — designlint v1.1
+ * UI/UX Design Brief — DesignLint v1.2
  * ──────────────────────────────────────────────
- * Archetype:   Industrial-Editorial + Bloomberg dense
+ *
+ * — Context —
+ * User:        Freelance designer juggling clients — overwhelmed, needs calm control
+ * Tension:     Dense BUT calm
+ * Archetype:   Things 3 — Keep: today-first, Discard: system blue, Add: editorial type
  *
  * — UI —
- * Aesthetic:   Industrial-Editorial
- * Type:        Fragment Mono display / Source Serif 4 body
- * Palette:     #1C1917 bg / #292524 surface / #D97706 primary / #FCD34D accent / #E7E5E4 text
- * Contrast:    text/bg=13.2:1 ✓ | muted/bg=4.8:1 ✓
- * Spatial:     Dense utility with editorial bleed on header
- * Motion:      Snappy at 150ms, staggered list entries
- * Signature:   Thin amber line under active nav item, no transition
+ * Aesthetic:   Neo-classical Utilitarian — calm authority for an overwhelmed user
+ * Type:        Cormorant Garamond display / Karla body
+ * Palette:     #F5F0E8 bg / #EDE8DE surface / #C85A38 primary / #1A1209 text
+ * Spatial:     Breathing room + dense task rows (tension resolved)
+ * Motion:      Snappy at 150ms, cinematic 600ms on day transitions
+ * Signature:   Priority = type weight (light→bold), no color badges
  *
  * — UX —
- * Navigation:  Command-First — ⌘K palette, minimal visible nav
- * Interaction: Inline editing + contextual actions on hover
- * Data entry:  Progressive disclosure — title first, details expand
- * Feedback:    Optimistic UI + contextual indicators, no global toasts
- * Onboarding:  Template-first — start from populated example
+ * Navigation:  Today-First — today is home, everything else secondary
+ * Interaction: Inline editing, swipe to complete
+ * Data entry:  Progressive — title only, details expand on tap
+ * Feedback:    Optimistic UI + undo, no toasts
+ * Onboarding:  Template-first — pre-populated "Sample Project"
+ *
+ * — Voice —
+ * Tone:        Warm + brief + gentle
+ * CTA:         "Done"
+ * Empty:       "A clear day — nice."
+ * Error:       "Lost that one. Undo?"
+ *
+ * — Departure —
+ * Priority as type weight, not color. No badges, no icons — just
+ * font-weight 300→700 to signal urgency. Doesn't exist in any reference.
  *
  * — Anti-pattern check —
  * UI: ✗ No Inter/Roboto  ✗ No purple gradient  ✗ No centered column
@@ -183,6 +231,7 @@ There's also a **Quick Start** (Express Mode) for when you need speed: pick an a
 |-------|---------------|--------|
 | Claude Code | Native `.skill` install | ✅ |
 | Cursor | `.cursorrules` | ✅ |
+| GitHub Copilot | `.github/copilot-instructions.md` | ✅ |
 | OpenAI Codex | `AGENTS.md` | ✅ |
 | Windsurf | `.windsurfrules` (same format as `.cursorrules`) | ✅ |
 | Other agents | Manual system prompt | ✅ |

@@ -1,6 +1,6 @@
 ---
 name: designlint
-version: 1.1.0
+version: 1.2.0
 author: Ruben Granet
 description: >
   Force distinctive, human-feeling UI/UX design before writing any code. Use this skill
@@ -9,20 +9,22 @@ description: >
   user says "build a UI", "create a screen", "design a component", "make it look good",
   "design the UX", or asks for any frontend/interface/experience work. This skill combats
   convergence at both the UI level (Inter+Tailwind+purple-gradient) AND the UX level
-  (tab bar + modal + toast). It imposes a structured creative decision phase covering
-  visual design AND interaction paradigms before any code is generated.
+  (tab bar + modal + toast). It produces design that feels human — not just different, but
+  intentional, empathetic, and crafted. It imposes a structured creative decision phase
+  covering user context, visual design, interaction paradigms, and voice before any code
+  is generated.
 compatibility: claude-code, cursor, codex, copilot
 ---
 
 # DesignLint
 
-> **TL;DR** — AI agents converge on the same look and feel. This skill forces 7 explicit design decisions before any code is written. It covers both UI (visual) and UX (interaction) — because a beautiful app with generic interactions is still generic.
+> **TL;DR** — AI agents produce interfaces that all look and feel the same. DesignLint fixes this by forcing you to understand the user, make 9 deliberate design decisions, resolve a creative tension, and critique the result — all before shipping. The goal isn't just different. It's human.
 
 ---
 
 ## The Problem This Skill Solves
 
-AI coding agents converge — at both the UI and UX levels. Left unconstrained, they default to:
+AI coding agents converge — at every level. Left unconstrained, they default to:
 
 **UI convergence:**
 - **Typography**: Inter, Roboto, or system fonts
@@ -39,56 +41,96 @@ AI coding agents converge — at both the UI and UX levels. Left unconstrained, 
 - **Onboarding**: 3-screen carousel with illustrations. Always.
 - **Data entry**: Full form with a Submit button. Always.
 
-This skill breaks convergence on both fronts by forcing deliberate decisions **before** any code is written. No exceptions.
+**Human convergence (the deeper problem):**
+- No understanding of who uses the product or how they feel
+- Aesthetic choices disconnected from context or audience
+- Archetypes copied instead of used as departure points
+- Generic microcopy ("Submit", "Cancel", "Are you sure?")
+- No creative tension — just safe, obvious choices
+- No self-critique — first draft ships as final
+
+This skill breaks all three layers.
 
 ---
 
 ## Quick Start (Express Mode)
 
-Short on time? Make these 3 decisions minimum. They cover 80% of the differentiation:
+Short on time? Make these 4 decisions minimum:
 
-1. **Pick an archetype** from `references/archetypes.md` (e.g., "Industrial-Editorial", "Luxury/Maison + Bloomberg dense")
-2. **Pick a palette** from the Palette Library in the same file (e.g., "Amber Night", "Terracotta Studio")
-3. **Pick a UX paradigm** from `references/ux.md` (e.g., "Command-First nav + Optimistic UI feedback")
+1. **Who and how they feel** — One sentence: who is the user and what emotional state are they in when they use this? (e.g., "A busy founder checking metrics between meetings — anxious, time-poor, wants reassurance")
+2. **Pick an archetype as departure point** from `references/archetypes.md` — then name ONE thing you'll deliberately do differently from that archetype
+3. **Pick a palette** from the Palette Library in the same file
+4. **Pick a UX paradigm** from `references/ux.md`
 
-Document them in a comment block:
+Document:
 ```
-/* Quick DDP: Archetype=Industrial-Editorial | Palette=Amber Night | UX=Command-First + Optimistic UI */
+/* Quick DDP: User=busy founder, anxious | Archetype=Linear (but warmer type) | Palette=Amber Night | UX=Command-First + Optimistic UI */
 ```
 
-Then write code. For the full 7-decision protocol (recommended for anything production-facing), continue below.
+Then write code. For the full protocol (recommended for anything production-facing), continue below.
 
 ---
 
-## Phase 0: STOP. Do not write code yet.
+## Phase 0: Understand Before You Design
 
-Before generating a single line of UI code, complete the **Design Decision Protocol** below. This is mandatory, not optional.
+Before touching archetypes or aesthetics, answer three questions about the **human** who will use this.
 
-### Step 0a — Read the Archetypes Library
-
-Open `references/archetypes.md`. This is your **primary design vocabulary**. It contains real product archetypes (Linear, Stripe, Vercel, Notion, Apple, Dior...), era archetypes, industry archetypes, art movements, typography-led systems, 8 ready-to-use palettes, and a combination matrix.
-
-**Read at least 5–6 archetypes before choosing.** The root cause of generic AI output is not picking from a wide enough reference set. This library exists to fix that.
-
-### Step 0b — Choose Your Archetype(s)
-
-Based on the brief, select 1 primary archetype + optionally 1 secondary for contrast. Elimination is part of the process: rule out what clearly doesn't fit, then commit to what does.
-
-Then ask:
-> *"If a senior designer at the reference brand I just chose were handed this brief — what would they do that I would never do by default?"*
-
-### Step 0c — Read the UX Reference
-
-Open `references/ux.md`. This is your **UX vocabulary**. It contains alternative navigation paradigms, interaction models, data entry patterns, feedback systems, onboarding approaches, and information architecture patterns — all drawn from real products that solved the differentiation problem at the experience level.
+### Step 0a — The User in Context
 
 Ask:
-> *"What is the primary interaction model of this product? If I removed all visual styling, would the experience still feel different from every other app in its category?"*
+> *"Who is this person, and what is their emotional state when they open this interface?"*
+
+This is not a persona exercise. It's a single sentence that anchors every decision that follows.
+
+**Examples**:
+- "A nurse checking patient vitals during a 12-hour shift — exhausted, needs clarity, zero tolerance for friction"
+- "A teenager customizing their profile — excited, playful, wants to express identity"
+- "A CFO reviewing quarterly numbers before a board meeting — stressed, skeptical, needs confidence in the data"
+- "A first-time user who just downloaded an app from a friend's recommendation — curious but impatient"
+
+The emotional context changes everything. A dashboard for an exhausted nurse and a dashboard for an excited teenager should feel fundamentally different — even if they display similar data.
+
+→ Document: `/* User: [who] — [emotional state] */`
+
+### Step 0b — The Creative Tension
+
+Great design lives in tension. Pick TWO qualities that seem contradictory, then commit to resolving both:
+
+**Example tensions**:
+- Dense BUT calm (Bloomberg data density + luxury whitespace)
+- Technical BUT warm (monospace precision + serif softness)
+- Playful BUT trustworthy (rounded/bouncy + structured layout)
+- Minimal BUT expressive (almost nothing on screen + one bold signature)
+- Fast BUT considered (snappy interactions + cinematic transitions on key moments)
+- Powerful BUT invisible (deep functionality + zero learning curve)
+
+The tension is your creative engine. Without it, you'll default to the obvious — and obvious is generic.
+
+→ Document: `/* Tension: [quality A] BUT [quality B] */`
+
+### Step 0c — Read the Archetypes Library (as departure points)
+
+Open `references/archetypes.md`. **Read at least 5–6 archetypes.** But read them as a designer reads references — not as templates to reproduce.
+
+For each archetype, the library documents tokens (type, palette, spatial, motion). **These are starting points, not specifications.** A human designer looks at Linear and thinks "I love the density but the coldness doesn't fit my users." That transformation — taking what works, discarding what doesn't, adding what's missing — is what makes design human.
+
+Select 1 primary archetype + optionally 1 secondary for contrast. Then ask:
+> *"What would I KEEP from this archetype, what would I DISCARD, and what would I ADD that isn't in any archetype?"*
+
+→ Document: `/* Archetype: [name] — Keep: [x], Discard: [y], Add: [z] */`
+
+### Step 0d — Read the UX Reference
+
+Open `references/ux.md`. This is your UX vocabulary — navigation paradigms, interaction models, data entry patterns, feedback systems, onboarding approaches.
+
+Ask:
+> *"Given my user's emotional state and context — what interaction model would reduce their friction the most? If I removed all visual styling, would the experience still feel different from every other app in its category?"*
 
 ---
 
 ## Phase 1: Design Decision Protocol (DDP)
 
-Work through these 7 decisions **in order**. Document your choices in a comment block at the top of your code.
+Work through these 9 decisions **in order**. Document your choices in a comment block at the top of your code.
 
 ### Decision 1 — Aesthetic Axis
 
@@ -107,7 +149,9 @@ Pick ONE from each column, then combine them:
 | Neo-classical | Timeless, serif-forward, refined proportions |
 | Maximalist | Rich, layered, abundant, visual feast |
 
-→ Pick your axis. Name it explicitly in your comment. E.g., `/* Aesthetic: Industrial-Editorial */`
+**Check**: Does your aesthetic axis serve the user's emotional context from Phase 0? A "Brutalist" axis for an anxious nurse is probably wrong. An "Industrial" axis for a teenager's profile is probably wrong. Let the user pull you toward the right aesthetic, not the other way around.
+
+→ Document: `/* Aesthetic: [axis] — because [why it serves the user] */`
 
 ### Decision 2 — Typography Contract
 
@@ -155,7 +199,7 @@ Pick ONE from each column, then combine them:
 - Muted, dusty tones with one electric accent
 - Monochromatic palettes with a single unexpected pop
 
-**⚠️ Accessibility check**: Verify that your `--color-text` on `--color-bg` meets WCAG AA contrast ratio (4.5:1 for body text, 3:1 for large text). Muted text tokens must still meet 3:1 minimum. Use https://webaim.org/resources/contrastchecker/ mentally or verify in code. Non-standard palettes are encouraged, but illegible text is not differentiation — it's a bug.
+**⚠️ Accessibility check**: Verify that your `--color-text` on `--color-bg` meets WCAG AA contrast ratio (4.5:1 for body text, 3:1 for large text). Muted text tokens must still meet 3:1 minimum. Non-standard palettes are encouraged, but illegible text is not differentiation — it's a bug.
 
 → Document: `/* Palette: [bg] / [surface] / [primary] / [accent] / [text] — contrast verified */`
 
@@ -246,6 +290,53 @@ Choose from: Progressive (learn by doing) / Template-First / Job-to-be-Done / Ze
  */
 ```
 
+### Decision 8 — Voice & Tone
+
+The words in an interface are design. "Submit" is not the same as "Save changes", which is not the same as "Done", which is not the same as "Let's go." A human-feeling interface has a consistent voice.
+
+**Define the voice along these axes:**
+
+| Axis | Range |
+|------|-------|
+| Formality | Casual ←→ Formal |
+| Warmth | Friendly ←→ Neutral ←→ Clinical |
+| Confidence | Assertive ←→ Gentle |
+| Brevity | Terse (1-2 words) ←→ Conversational (full sentences) |
+
+**Then apply it to these common UI touchpoints:**
+- **Primary CTA**: What does the main button say? (not "Submit")
+- **Empty states**: What do you say when there's nothing to show? (not "No items found")
+- **Error messages**: How do you communicate failure? (not "An error occurred")
+- **Confirmations**: How do you celebrate success? (not "Success!")
+- **Loading**: What do you say while waiting? (not just a spinner)
+
+**Examples by voice:**
+- **Warm + casual + brief**: "Save" / "Nothing here yet — start one?" / "That didn't work. Try again?" / "Saved ✓" / "Hang tight…"
+- **Formal + confident + terse**: "Confirm" / "No records" / "Operation failed. Retry." / "Confirmed" / (no text, progress bar only)
+- **Friendly + conversational**: "Save your work" / "You haven't created anything yet — here are some ideas" / "Something went wrong on our end. We're looking into it." / "All saved! You're good." / "Getting things ready…"
+- **Playful + warm**: "Ship it!" / "It's quiet in here… 🦗" / "Oops — that broke. Let's fix it." / "Nailed it! 🎯" / "Brewing…"
+
+→ Document: `/* Voice: [formality] + [warmth] + [confidence] + [brevity]. CTA=[x], Empty=[y], Error=[z] */`
+
+### Decision 9 — The Departure
+
+This is the decision that makes the design yours, not a reproduction of an archetype.
+
+Look back at your archetype from Phase 0c. You documented what you'd keep, discard, and add. Now make it concrete:
+
+**Name ONE specific thing in your design that exists in NO archetype in the reference library.**
+
+This could be:
+- A layout pattern you invented for this context
+- A color combination that doesn't appear in any palette
+- An interaction that isn't in the UX reference
+- A typographic treatment that isn't in any archetype
+- A feedback pattern that doesn't exist in the library
+
+If you can't name one, you're reproducing, not designing. Go back and find the thing that makes this *this* — not a copy of something else.
+
+→ Document: `/* Departure: [what I invented that isn't in any reference] */`
+
 ---
 
 ## Phase 2: Generate the Design Comment Block
@@ -254,25 +345,37 @@ Before your code, write this block:
 
 ```
 /*
- * UI/UX Design Brief — DesignLint v1.1
+ * UI/UX Design Brief — DesignLint v1.2
  * ──────────────────────────────────────────────
- * Archetype:   [Industrial-Editorial + Bloomberg dense]
+ *
+ * — Context —
+ * User:        [who — emotional state]
+ * Tension:     [quality A] BUT [quality B]
+ * Archetype:   [name] — Keep: [x], Discard: [y], Add: [z]
  *
  * — UI —
- * Aesthetic:   [Industrial-Editorial]
- * Type:        [Fragment Mono display / Source Serif 4 body]
- * Palette:     [#1C1917 bg / #292524 surface / #D97706 primary / #FCD34D accent / #E7E5E4 text]
- * Contrast:    [text/bg=13.2:1 ✓ | muted/bg=4.8:1 ✓]
- * Spatial:     [Dense utility with editorial bleed on header]
- * Motion:      [Snappy at 150ms, staggered list entries]
- * Signature:   [Thin amber line under active nav item, no transition]
+ * Aesthetic:   [axis — why it serves the user]
+ * Type:        [Display / Body]
+ * Palette:     [bg / surface / primary / accent / text — contrast verified]
+ * Spatial:     [approach]
+ * Motion:      [character at timing]
+ * Signature:   [description]
  *
  * — UX —
- * Navigation:  [Command-First — ⌘K palette, minimal visible nav]
- * Interaction: [Inline editing + contextual actions on hover]
- * Data entry:  [Progressive disclosure — title first, details expand]
- * Feedback:    [Optimistic UI + contextual indicators, no global toasts]
- * Onboarding:  [Template-first — start from populated example]
+ * Navigation:  [model]
+ * Interaction: [model]
+ * Data entry:  [pattern]
+ * Feedback:    [model]
+ * Onboarding:  [paradigm]
+ *
+ * — Voice —
+ * Tone:        [formality + warmth + confidence + brevity]
+ * CTA:         [primary button text]
+ * Empty:       [empty state text]
+ * Error:       [error message text]
+ *
+ * — Departure —
+ * [what I invented that isn't in any reference]
  *
  * — Anti-pattern check —
  * UI: ✗ No Inter/Roboto  ✗ No purple gradient  ✗ No centered column  ✗ No uniform padding
@@ -297,11 +400,13 @@ Read the relevant reference file for implementation patterns:
 - **React Native** → `references/react-native.md`
 - **Dashboards / Data UIs** → `references/dashboards.md`
 
+When using platform reference code: **adapt, don't copy.** The code samples are implementation patterns, not final code. Change the tokens, adjust the proportions, modify the behavior to match YOUR design brief — especially your creative tension and departure.
+
 ---
 
 ## Phase 4: Anti-Convergence Audit
 
-Before delivering code, run this mental checklist:
+Before delivering code, run this checklist:
 
 **UI Audit:**
 ```
@@ -364,16 +469,68 @@ If any answer is "no" — fix it before delivering.
 
 ---
 
+## Phase 5: The Human Critique
+
+This is the phase that separates anti-generic design from genuinely human design.
+
+After the code is written and passes the audit, step back and answer these questions honestly:
+
+### The Empathy Check
+```
+[ ] Would the user from Phase 0 feel understood by this interface?
+    → Not "can they use it" but "does it feel like it was made for them?"
+    → If not: what emotional signal is missing?
+
+[ ] Does the interface respect the user's state?
+    → A stressed user needs calm. An excited user needs energy.
+    → Does the visual and interaction design match?
+```
+
+### The Craft Check
+```
+[ ] Is there a moment of delight — something small that would make
+    someone say "that's nice" without knowing why?
+    → A micro-animation, a well-worded empty state, a thoughtful default.
+    → If not: add one. This is what separates tool from craft.
+
+[ ] Does the voice feel like a person wrote it?
+    → Read every label, button, and message out loud.
+    → If it sounds like a robot or a legal document: rewrite it.
+
+[ ] Is there anything you'd be proud to show a designer?
+    → Not "does it pass the audit" but "does it have a point of view?"
+    → If not: the Departure (Decision 9) isn't bold enough. Push further.
+```
+
+### The Honesty Check
+```
+[ ] Is the creative tension actually resolved in the design?
+    → Or did you just pick two words and ignore one of them?
+    → "Dense BUT calm" should feel dense AND calm — not just dense.
+
+[ ] Would you use this app yourself and enjoy it?
+    → If the honest answer is "it's fine" — that's not good enough.
+    → "Fine" is the enemy. Push until the answer is "yes."
+```
+
+If anything fails here — iterate. Change one decision, re-execute, re-critique. The first version is rarely the human version.
+
+---
+
 ## Principles
 
-**UI and UX are inseparable.** A distinctive visual identity on a generic interaction model is decoration on a bad product. A brilliant interaction model with generic visuals is invisible. Both must be differentiated, together.
+**Design is for humans, not for audits.** The protocol and audits exist to get you to the starting line, not the finish. A design that passes every check but doesn't feel like anything is a failure. A design that fails one check but makes someone smile is closer to the goal.
+
+**Tension is the engine.** Without creative tension, you'll produce the most obvious interpretation of your archetype. The tension between two contradictory qualities is what forces original solutions. Lean into it.
+
+**Archetypes are departure points.** The moment your design is indistinguishable from the archetype, you've reproduced instead of designed. Keep what works, discard what doesn't fit your user, add what's missing. The "Add" is the most important part.
+
+**Voice is design.** An interface with beautiful typography and "An error occurred. Please try again." feels like a robot wearing a nice suit. Every word should sound like the same person who chose the colors and the fonts.
 
 **Commit or don't.** A half-executed concept is worse than a safe one. If you pick Brutalist, go brutalist. If you pick Command-First navigation, remove the tab bar entirely — don't hedge with both.
 
-**Context shapes everything.** A medical dashboard and a creative portfolio both deserve differentiation — but different kinds. The brief tells you what kind of different is appropriate.
+**Context over rules.** A medical dashboard and a creative portfolio both deserve human design — but different kinds. The user's emotional context from Phase 0 overrides every other decision. When in doubt, go back to who you're designing for and how they feel.
 
-**Accessible by default.** Distinctive palettes and spatial choices must still serve all users. Contrast ratios, focus states, and semantic structure are not optional — they're the floor, not the ceiling.
+**Iterate.** Human designers don't ship first drafts. If the critique in Phase 5 reveals something flat, change it. The protocol is a loop, not a waterfall.
 
-**The last question is the hardest.** "If you stripped all visual styling, would the UX still feel distinct?" This is the test that matters. An app can have beautiful typography and still navigate, interact, and feel exactly like every other app in its category.
-
-**Restraint is not safety.** A deliberately minimal design with one extraordinary interaction detail beats a maximalist design that tries too hard. Restraint is a creative choice, not avoidance.
+**Restraint is not safety.** A deliberately minimal design with one extraordinary interaction detail and perfectly chosen words beats a maximalist design that tries too hard. Restraint is a creative choice, not avoidance.

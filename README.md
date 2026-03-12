@@ -72,8 +72,6 @@ designlint/
 ├── SKILL.md                        # Core protocol (Create + Audit modes)
 ├── AGENTS.md                       # Drop-in for OpenAI Codex
 ├── .cursorrules                    # Drop-in for Cursor
-├── .github/
-│   └── copilot-instructions.md     # Drop-in for GitHub Copilot
 └── references/
     ├── archetypes.md               # Design vocabulary library
     ├── ux.md                       # UX paradigm library
@@ -85,6 +83,10 @@ designlint/
 ```
 
 ---
+## Quick install
+```bash
+npx skills add rgranet/designlint-skill
+```
 
 ## Install
 
@@ -98,14 +100,6 @@ claude skill install designlint.skill
 
 ```bash
 cp designlint/.cursorrules ./
-cp -r designlint/ ./designlint/
-```
-
-### GitHub Copilot
-
-```bash
-mkdir -p .github
-cp designlint/.github/copilot-instructions.md .github/
 cp -r designlint/ ./designlint/
 ```
 
@@ -178,7 +172,6 @@ Add the `designlint/` folder to your project and reference `SKILL.md` in whateve
 |-------|---------------|--------|
 | Claude Code | Native `.skill` install | ✅ |
 | Cursor | `.cursorrules` | ✅ |
-| GitHub Copilot | `.github/copilot-instructions.md` | ✅ |
 | OpenAI Codex | `AGENTS.md` | ✅ |
 | Windsurf | `.windsurfrules` (same as `.cursorrules`) | ✅ |
 | Other agents | Manual system prompt | ✅ |
